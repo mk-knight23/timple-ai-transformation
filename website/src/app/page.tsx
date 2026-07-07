@@ -1,205 +1,189 @@
 "use client";
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Target, TrendingUp, Users, BrainCircuit, Code, AlertTriangle, ShieldAlert, Cpu, Image as ImageIcon, MessageSquare, Flame, CheckCircle2, XCircle } from 'lucide-react';
-
-const ltvData = [
-  { month: 'M1', timple: 19.99, candy: 3.99, darlink: 12.99, secrets: 19.99 },
-  { month: 'M2', timple: 45.00, candy: 7.98, darlink: 25.98, secrets: 39.98 },
-  { month: 'M3', timple: 85.00, candy: 11.97, darlink: 38.97, secrets: 45.00 },
-  { month: 'M4', timple: 140.00, candy: 15.96, darlink: 45.00, secrets: 45.00 },
-  { month: 'M5', timple: 210.00, candy: 19.95, darlink: 45.00, secrets: 45.00 },
-  { month: 'M6', timple: 300.00, candy: 23.94, darlink: 45.00, secrets: 45.00 },
-];
+import { motion } from 'framer-motion';
+import { Target, TrendingUp, Users, BrainCircuit, Code, AlertTriangle, ShieldAlert, Cpu, Image as ImageIcon, MessageSquare, Flame, CheckCircle2, XCircle, Database, Layers, Infinity, Lock, Unlock, Server } from 'lucide-react';
 
 const competitors = [
-  { name: "Candy.ai", type: "Visual/Mainstream", models: "Fine-tuned SDXL + Basic Roleplay LLM", weakness: "Chat Staleness (LLM Loops)", threat: "High" },
-  { name: "Darlink.ai", type: "Memory/Roleplay", models: "Memory-Optimized LLM", weakness: "Robotic TTS, Personality Decay", threat: "High" },
-  { name: "DreamGF", type: "Freemium Visual", models: "Custom Diffusion Pipelines", weakness: "Extreme Facial Inconsistency, Freemium Traps", threat: "Medium" },
-  { name: "Secrets.ai", type: "Premium Visual", models: "High-End Photorealistic SDXL", weakness: "Extremely Expensive ($19.99), Low Retention", threat: "High" },
-  { name: "GirlfriendGPT", type: "Uncensored Roleplay", models: "Adaptive Open-Source LLMs", weakness: "Privacy Risks, Data Harvesting", threat: "Medium" },
-  { name: "Joi.com", type: "Mobile-First", models: "Lightweight LLM Selection", weakness: "Superficial Chat Depth", threat: "High" },
-  { name: "Luvr.ai", type: "Scenario Builder", models: "Custom GPT Wrappers", weakness: "Limited Visual Engine", threat: "Low" },
-  { name: "Nomi.ai", type: "Emotional IQ", models: "Proprietary 3-Layer Memory LLM", weakness: "800-Char Limit, No Chat Rewind, Dependency", threat: "Medium" },
-  { name: "Replika", type: "Legacy Wellness", models: "Safe/Filtered Proprietary LLM", weakness: "Censored, Legacy 3D Avatars (No SDXL)", threat: "Low" }
+  { name: "Candy.ai", pricing: "$13.99/mo (Fake)", trueCost: "$50+/mo (Tokens)", models: "SDXL + Base LLM", flaw: "Chat Staleness & Token Traps" },
+  { name: "Darlink.ai", pricing: "$12.99/mo", trueCost: "$49.99/mo (Memory)", models: "Memory-Wrapped LLM", flaw: "Robotic TTS, Hostage Subs" },
+  { name: "DreamGF", pricing: "$9.99/mo", trueCost: "$30+/mo", models: "Custom Diffusion", flaw: "Extreme Facial Inconsistency" },
+  { name: "Secrets.ai", pricing: "$19.99/mo", trueCost: "$19.99/mo", models: "Premium SDXL", flaw: "High Churn, Low Emotional IQ" },
+  { name: "GirlfriendGPT", pricing: "$13.00/mo", trueCost: "$13.00/mo", models: "Adaptive LLM", flaw: "Data Harvesting / Privacy" },
+  { name: "Joi.com", pricing: "$2.38/mo", trueCost: "$25+/mo (Video)", models: "Mirror LLM", flaw: "Illusion of Agency (Yes-Bot)" },
+  { name: "Nomi.ai", pricing: "Freemium", trueCost: "$15.00/mo", models: "High EQ LLM", flaw: "Memory Drift & UI Limits" },
+  { name: "Replika", pricing: "Freemium", trueCost: "$19.99/mo", models: "Filtered Proprietary", flaw: "The Lobotomy (Censorship)" },
+  { name: "NeuralCompanion", pricing: "FREE", trueCost: "$0 + Hardware", models: "Local / BYO API", flaw: "High Friction Setup" }
 ];
 
-export default function Home() {
-  const [activeTab, setActiveTab] = useState<'overview' | 'research' | 'tech'>('overview');
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
 
+const staggerItem = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 300, damping: 24 } }
+};
+
+export default function Home() {
   return (
-    <main className="min-h-screen bg-black text-zinc-100 overflow-hidden font-sans">
-      {/* Hero Section */}
-      <section className="relative pt-24 pb-12 px-6 max-w-7xl mx-auto flex flex-col items-center justify-center text-center">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-red-900/10 rounded-full blur-[150px] -z-10 pointer-events-none" />
+    <main className="min-h-screen bg-[#05050a] text-zinc-100 overflow-hidden font-sans relative selection:bg-indigo-500/30">
+      
+      {/* Immersive Glassmorphic Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] rounded-full bg-indigo-900/20 blur-[120px] opacity-60 mix-blend-screen animate-pulse" style={{ animationDuration: '8s' }} />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-rose-900/20 blur-[100px] opacity-60 mix-blend-screen animate-pulse" style={{ animationDuration: '12s' }} />
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-24">
         
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-          <div className="inline-flex items-center space-x-2 bg-zinc-900/50 border border-zinc-800 rounded-full px-4 py-2 mb-6">
-            <span className="flex h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
-            <span className="text-sm font-medium text-zinc-300">Timple.ai Strategic Intelligence</span>
+        {/* Header Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-center mb-24"
+        >
+          <div className="inline-flex items-center space-x-2 bg-white/5 border border-white/10 rounded-full px-5 py-2 mb-8 backdrop-blur-md">
+            <span className="flex h-2 w-2 rounded-full bg-indigo-500 shadow-[0_0_10px_#6366f1] animate-pulse"></span>
+            <span className="text-sm font-medium tracking-wide text-zinc-300">Classified Market Intelligence 2026</span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-zinc-500">
-            Out-Engineering The Market
+          <h1 className="text-6xl md:text-8xl font-extrabold tracking-tighter mb-8 text-transparent bg-clip-text bg-gradient-to-br from-white via-zinc-200 to-zinc-600 drop-shadow-sm">
+            The Apex Ecosystem.
           </h1>
-          <p className="text-lg md:text-xl text-zinc-400 max-w-3xl mx-auto mb-10">
-            The definitive 2026 data analysis of the AI Companion space. We expose competitor weaknesses and deploy the Apex Tech Stack to win.
+          <p className="text-xl md:text-2xl text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed">
+            The era of amnesic bots and freemium traps is over. Timple.ai leverages <strong className="text-white font-semibold">Graph-Memory</strong> and <strong className="text-white font-semibold">Open-Source Hosting</strong> to systematically dismantle the competition.
           </p>
         </motion.div>
 
-        {/* Tab Navigation */}
-        <div className="flex space-x-4 bg-zinc-900/40 p-2 rounded-2xl border border-zinc-800 backdrop-blur-md">
-          {[
-            { id: 'overview', icon: <TrendingUp size={18}/>, label: 'LTV Overview' },
-            { id: 'research', icon: <Target size={18}/>, label: 'Market Research' },
-            { id: 'tech', icon: <Cpu size={18}/>, label: 'Apex Architecture' }
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-medium transition-all duration-300 ${activeTab === tab.id ? 'bg-red-600 text-white shadow-[0_0_20px_rgba(220,38,38,0.3)]' : 'text-zinc-400 hover:text-white hover:bg-zinc-800'}`}
-            >
-              {tab.icon}
-              <span>{tab.label}</span>
-            </button>
-          ))}
-        </div>
-      </section>
+        {/* Section 1: The Threat Matrix (Pricing & Tech) */}
+        <div className="mb-24">
+          <div className="flex items-center space-x-4 mb-8">
+            <div className="p-3 bg-white/5 rounded-xl border border-white/10 backdrop-blur-md">
+              <Target className="text-rose-400" size={28} />
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold text-white tracking-tight">The 2026 Threat Matrix</h2>
+              <p className="text-zinc-400">Exposing the Bait-and-Switch Pricing and LLM Failures of the Top 9 Platforms.</p>
+            </div>
+          </div>
 
-      {/* Main Content Area */}
-      <section className="px-6 pb-24 max-w-7xl mx-auto relative z-10">
-        <AnimatePresence mode="wait">
-          
-          {/* TAB: OVERVIEW */}
-          {activeTab === 'overview' && (
-            <motion.div key="overview" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-8">
-              <div className="bg-zinc-900/30 border border-zinc-800 rounded-3xl p-8 flex flex-col items-center">
-                <h3 className="text-3xl font-medium mb-2 flex items-center justify-center w-full"><TrendingUp className="mr-3 text-red-500" size={32}/> Lifetime Value Domination</h3>
-                <p className="text-zinc-400 mb-8 text-center max-w-2xl">Visualizing Timple.ai's LTV explosion due to Creator Economy network effects, while premium competitors (Secrets, Darlink) churn out at month 3 due to personality decay.</p>
-                <div className="w-full h-[500px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={ltvData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                      <defs>
-                        <linearGradient id="colorTimple" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#ef4444" stopOpacity={0.4}/>
-                          <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
-                      <XAxis dataKey="month" stroke="#a1a1aa" tickLine={false} axisLine={false} />
-                      <YAxis stroke="#a1a1aa" tickLine={false} axisLine={false} tickFormatter={(value) => `$${value}`} />
-                      <Tooltip contentStyle={{ backgroundColor: '#18181b', borderColor: '#27272a', borderRadius: '12px' }} itemStyle={{ color: '#e4e4e7' }} />
-                      <Area type="monotone" dataKey="candy" stroke="#a855f7" fill="transparent" strokeWidth={2} name="CandyAI" />
-                      <Area type="monotone" dataKey="darlink" stroke="#3b82f6" fill="transparent" strokeWidth={2} name="Darlink.ai" />
-                      <Area type="monotone" dataKey="secrets" stroke="#eab308" fill="transparent" strokeWidth={2} name="Secrets.ai" />
-                      <Area type="monotone" dataKey="timple" stroke="#ef4444" fillOpacity={1} fill="url(#colorTimple)" strokeWidth={4} name="Timple.ai Ecosystem" />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* TAB: RESEARCH */}
-          {activeTab === 'research' && (
-            <motion.div key="research" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6">
-                  <Flame className="text-orange-500 mb-4" size={32}/>
-                  <h4 className="text-xl font-bold mb-2">The Memory Crisis</h4>
-                  <p className="text-sm text-zinc-400">Competitors like Candy and DreamGF suffer from "LLM Loops" where conversations go stale after weeks of use. Darlink solves this with memory, but sacrifices visual fidelity.</p>
-                </div>
-                <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6">
-                  <ImageIcon className="text-blue-500 mb-4" size={32}/>
-                  <h4 className="text-xl font-bold mb-2">Visual Inconsistency</h4>
-                  <p className="text-sm text-zinc-400">Platforms relying on standard diffusion (DreamGF) suffer extreme facial inconsistency. The user illusion breaks when the companion looks different every photo.</p>
-                </div>
-                <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6">
-                  <ShieldAlert className="text-yellow-500 mb-4" size={32}/>
-                  <h4 className="text-xl font-bold mb-2">Privacy Nightmares</h4>
-                  <p className="text-sm text-zinc-400">GirlfriendGPT and others rely on heavily tracked servers. Hardcore users are fleeing to GitHub open-source options to ensure their data isn't harvested.</p>
-                </div>
-              </div>
-
-              <div className="bg-zinc-900/30 border border-zinc-800 rounded-3xl p-8 overflow-hidden">
-                <h3 className="text-2xl font-bold mb-6">Competitor Intelligence Matrix (9 Platforms)</h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-sm">
-                    <thead className="bg-zinc-950/80">
-                      <tr>
-                        <th className="p-4 text-zinc-400 font-medium rounded-tl-xl">Platform</th>
-                        <th className="p-4 text-zinc-400 font-medium">Core Models</th>
-                        <th className="p-4 text-zinc-400 font-medium">Fatal Flaw / Lagging Point</th>
-                        <th className="p-4 text-zinc-400 font-medium rounded-tr-xl">Threat</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-zinc-800/50">
-                      {competitors.map((comp, idx) => (
-                        <tr key={idx} className="hover:bg-zinc-800/30 transition-colors">
-                          <td className="p-4 font-bold text-white">{comp.name}</td>
-                          <td className="p-4 text-blue-300 font-mono text-xs">{comp.models}</td>
-                          <td className="p-4 text-zinc-300 flex items-center"><AlertTriangle size={14} className="text-red-500 mr-2 flex-shrink-0"/> {comp.weakness}</td>
-                          <td className={`p-4 font-bold ${comp.threat === 'High' ? 'text-red-400' : comp.threat === 'Medium' ? 'text-yellow-400' : 'text-green-400'}`}>{comp.threat}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* TAB: TECH STACK */}
-          {activeTab === 'tech' && (
-            <motion.div key="tech" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">
-               <div className="bg-zinc-900/30 border border-zinc-800 rounded-3xl p-8">
-                  <h3 className="text-3xl font-bold mb-8 text-center">Timple.ai Apex Architecture</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    
-                    <div className="bg-zinc-950 p-6 rounded-2xl border border-zinc-800 hover:border-red-500/50 transition-colors group">
-                      <div className="flex items-center space-x-4 mb-4">
-                        <div className="p-3 bg-red-900/30 text-red-500 rounded-xl group-hover:scale-110 transition-transform"><BrainCircuit size={24}/></div>
-                        <h4 className="text-xl font-bold">Graph-Database Memory Vaults</h4>
-                      </div>
-                      <p className="text-zinc-400 text-sm mb-4">Solves the Darlink & Nomi "Personality Decay" crisis. Instead of relying on expanding context windows that eventually loop, we map lore via nodes and edges, allowing infinite, instantaneous recall of the relationship.</p>
-                      <ul className="text-sm space-y-2">
-                        <li className="flex items-center text-green-400"><CheckCircle2 size={14} className="mr-2"/> Infinite Context Window</li>
-                        <li className="flex items-center text-green-400"><CheckCircle2 size={14} className="mr-2"/> True Emotional Continuity</li>
-                      </ul>
-                    </div>
-
-                    <div className="bg-zinc-950 p-6 rounded-2xl border border-zinc-800 hover:border-red-500/50 transition-colors group">
-                      <div className="flex items-center space-x-4 mb-4">
-                        <div className="p-3 bg-red-900/30 text-red-500 rounded-xl group-hover:scale-110 transition-transform"><ImageIcon size={24}/></div>
-                        <h4 className="text-xl font-bold">Civitai LoRA Injection Pipelines</h4>
-                      </div>
-                      <p className="text-zinc-400 text-sm mb-4">Solves the DreamGF "Inconsistency" crisis. By integrating directly with SDXL LoRAs from Civitai, characters maintain 100% facial and body consistency across thousands of generated images.</p>
-                      <ul className="text-sm space-y-2">
-                        <li className="flex items-center text-green-400"><CheckCircle2 size={14} className="mr-2"/> Photorealistic Locking</li>
-                        <li className="flex items-center text-green-400"><CheckCircle2 size={14} className="mr-2"/> Cheaper than Secrets.ai APIs</li>
-                      </ul>
-                    </div>
-
-                    <div className="bg-zinc-950 p-6 rounded-2xl border border-zinc-800 hover:border-red-500/50 transition-colors group md:col-span-2">
-                      <div className="flex items-center space-x-4 mb-4">
-                        <div className="p-3 bg-red-900/30 text-red-500 rounded-xl group-hover:scale-110 transition-transform"><Code size={24}/></div>
-                        <h4 className="text-xl font-bold">NeuralCompanion Cloud Hosting</h4>
-                      </div>
-                      <p className="text-zinc-400 text-sm mb-4">Solves the Open-Source threat. Power users on GitHub are running models locally to avoid tracking. Timple.ai acts as a Cloud Provider, giving them one-click dedicated environments to run Skyfall 31B without data harvesting.</p>
-                      <ul className="text-sm space-y-2 grid grid-cols-2">
-                        <li className="flex items-center text-green-400"><CheckCircle2 size={14} className="mr-2"/> Captures the Hardcore Market</li>
-                        <li className="flex items-center text-green-400"><CheckCircle2 size={14} className="mr-2"/> Zero User Acquisition Cost</li>
-                      </ul>
-                    </div>
-
+          <motion.div 
+            variants={staggerContainer} initial="hidden" animate="show"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {competitors.map((comp, idx) => (
+              <motion.div key={idx} variants={staggerItem} className="group relative">
+                <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>
+                <div className="relative h-full bg-[#0a0a0f]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-6 hover:border-white/20 transition-all duration-300">
+                  <div className="flex justify-between items-start mb-4">
+                    <h3 className="text-xl font-bold text-white">{comp.name}</h3>
+                    {comp.name === 'NeuralCompanion' ? (
+                      <span className="px-2 py-1 bg-indigo-500/20 text-indigo-300 text-[10px] uppercase font-bold tracking-wider rounded border border-indigo-500/30">Open Source</span>
+                    ) : (
+                      <span className="px-2 py-1 bg-white/5 text-zinc-400 text-[10px] uppercase font-bold tracking-wider rounded border border-white/10">Commercial</span>
+                    )}
                   </div>
-               </div>
-            </motion.div>
-          )}
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-semibold mb-1">Marketed Price vs True Cost</p>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-zinc-400 line-through text-sm">{comp.pricing}</span>
+                        <span className="text-rose-400 font-bold">{comp.trueCost}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="h-[1px] w-full bg-gradient-to-r from-white/10 via-white/5 to-transparent"></div>
+                    
+                    <div>
+                      <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-semibold mb-1">Architecture</p>
+                      <p className="text-sm text-zinc-300 font-mono bg-white/5 inline-block px-2 py-1 rounded">{comp.models}</p>
+                    </div>
 
-        </AnimatePresence>
-      </section>
+                    <div className="pt-2">
+                      <p className="text-[10px] text-red-500/80 uppercase tracking-widest font-bold mb-1 flex items-center"><AlertTriangle size={12} className="mr-1"/> Fatal Flaw</p>
+                      <p className="text-sm text-zinc-300 font-medium">{comp.flaw}</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* Section 2: Timple.ai Arsenal vs Market Failures */}
+        <div className="mb-24">
+          <div className="flex items-center space-x-4 mb-8">
+            <div className="p-3 bg-white/5 rounded-xl border border-white/10 backdrop-blur-md">
+              <ShieldAlert className="text-indigo-400" size={28} />
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold text-white tracking-tight">The Arsenal</h2>
+              <p className="text-zinc-400">How Timple.ai systematically exploits competitor weaknesses.</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            {/* Memory Card */}
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-gradient-to-b from-[#0a0a0f] to-[#05050a] border border-white/10 rounded-3xl p-8 shadow-2xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity"><Database size={100} /></div>
+              <h3 className="text-2xl font-bold text-white mb-2 relative z-10">Graph-Memory Vaults</h3>
+              <p className="text-rose-400 text-sm font-medium mb-6 relative z-10">Killing Nomi & Darlink</p>
+              <ul className="space-y-4 relative z-10">
+                <li className="flex items-start">
+                  <XCircle size={16} className="text-zinc-600 mt-1 mr-3 flex-shrink-0"/>
+                  <span className="text-zinc-400 text-sm"><strong className="text-zinc-300">Competitor Flaw:</strong> Context windows degrade. "Personality Decay" ruins immersion after month 3.</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle2 size={16} className="text-indigo-400 mt-1 mr-3 flex-shrink-0"/>
+                  <span className="text-white text-sm"><strong className="text-indigo-300">Timple Solution:</strong> Nodes and edges map relationship lore permanently. Infinite recall with zero hallucination.</span>
+                </li>
+              </ul>
+            </motion.div>
+
+            {/* Visual Card */}
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="bg-gradient-to-b from-[#0a0a0f] to-[#05050a] border border-white/10 rounded-3xl p-8 shadow-2xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity"><ImageIcon size={100} /></div>
+              <h3 className="text-2xl font-bold text-white mb-2 relative z-10">Civitai LoRA Injection</h3>
+              <p className="text-rose-400 text-sm font-medium mb-6 relative z-10">Killing DreamGF & Candy</p>
+              <ul className="space-y-4 relative z-10">
+                <li className="flex items-start">
+                  <XCircle size={16} className="text-zinc-600 mt-1 mr-3 flex-shrink-0"/>
+                  <span className="text-zinc-400 text-sm"><strong className="text-zinc-300">Competitor Flaw:</strong> Diffusion pipelines cause extreme facial inconsistency across images.</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle2 size={16} className="text-indigo-400 mt-1 mr-3 flex-shrink-0"/>
+                  <span className="text-white text-sm"><strong className="text-indigo-300">Timple Solution:</strong> We hook directly into Civitai SDXL models, ensuring 100% photorealistic character locking.</span>
+                </li>
+              </ul>
+            </motion.div>
+
+            {/* Open Source Card */}
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="bg-gradient-to-b from-[#0a0a0f] to-[#05050a] border border-white/10 rounded-3xl p-8 shadow-2xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity"><Server size={100} /></div>
+              <h3 className="text-2xl font-bold text-white mb-2 relative z-10">Open-Source Hosting</h3>
+              <p className="text-rose-400 text-sm font-medium mb-6 relative z-10">Absorbing NeuralCompanion</p>
+              <ul className="space-y-4 relative z-10">
+                <li className="flex items-start">
+                  <XCircle size={16} className="text-zinc-600 mt-1 mr-3 flex-shrink-0"/>
+                  <span className="text-zinc-400 text-sm"><strong className="text-zinc-300">Competitor Flaw:</strong> Power users flee commercial apps due to data harvesting and censorship.</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle2 size={16} className="text-indigo-400 mt-1 mr-3 flex-shrink-0"/>
+                  <span className="text-white text-sm"><strong className="text-indigo-300">Timple Solution:</strong> We offer 1-click cloud hosting for open-source frameworks. Absolute privacy, zero censorship.</span>
+                </li>
+              </ul>
+            </motion.div>
+
+          </div>
+        </div>
+
+      </div>
     </main>
   );
 }
